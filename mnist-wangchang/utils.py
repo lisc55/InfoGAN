@@ -46,6 +46,6 @@ def draw(fake_image, n, name):
         t = np.reshape(fake_image[i-1], (28, 28))
         plt.xticks([])
         plt.yticks([])
-        plt.imshow(t, cmap='gray_r')
+        plt.imshow(t, cmap='gray')
         plt.savefig('results/'+name+str(n)+'.jpg')
     plt.clf()
