@@ -9,12 +9,13 @@ import numpy as np
 
 NEPOCH = 100
 train_data = load_mnist_data()
+train_data = np.reshape(train_data, (-1, 50, 28, 28, 1))
 model = InfoGAN()
 model.G.train()
 model.D.train()
 model.Q.train()
 d_optimizer = tf.optimizers.Adam(2e-4, 0.5)
-g_optimizer = tf.optimizers.Adam(2e-4, 0.5)
+g_optimizer = tf.optimizers.Adam(1e-3, 0.5)
 q_optimizer = tf.optimizers.Adam(2e-4, 0.5)
 for epoch in range(NEPOCH):
     for step, batch_images in enumerate(train_data):

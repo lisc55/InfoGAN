@@ -79,12 +79,12 @@ class InfoGAN:
         d_gen = self.D(fake_image)
         aux = self.Q(fake_image)
         discrete, mean, log_std = aux[:, :10], aux[:, 10:12], aux[:, 12:]
-        D_loss = -tf.reduce_mean(tf.log(d_true)) - \
-            tf.reduce_mean(tf.log(1.-d_gen))
-        G_loss = tf.reduce_mean(-tf.log(d_gen))
-        self.g_c_loss = tf.reduce_mean(tf.reduce_sum(
-            log_std+0.5*tf.square((c-mean)/tf.exp(log_std)), reduction_indices=1))
-        self.g_d_loss = tf.reduce_mean(
+        D_loss = -tf.math.reduce_mean(tf.math.log(d_true)) - \
+            tf.math.reduce_mean(tf.math.log(1.0-d_gen))
+        G_loss = tf.math.reduce_mean(-tf.math.log(d_gen))
+        self.g_c_loss = tf.math.reduce_mean(tf.math.reduce_sum(
+            log_std+0.5*tf.math.square((c-mean)/tf.math.exp(log_std)), axis=1))
+        self.g_d_loss = tf.math.reduce_mean(
             tf.nn.softmax_cross_entropy_with_logits(labels=d, logits=discrete))
         self.mutual_info = self.g_d_loss+self.g_c_loss
         self.g_loss = G_loss
