@@ -7,7 +7,7 @@ import time
 import multiprocessing
 import numpy as np
 
-NEPOCH = 2
+NEPOCH = 1000
 batch_size = 50
 train_data = load_mnist_data()
 train_data = np.reshape(train_data, (-1, batch_size, 28, 28, 1))
