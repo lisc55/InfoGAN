@@ -1,5 +1,8 @@
 import tensorflow as tf
 import tensorlayer as tl
+import matplotlib.pyplot as plt
+from utils import *
+import numpy as np
 
 '''
 D:
@@ -89,3 +92,14 @@ class InfoGAN:
         self.mutual_info = self.g_d_loss+self.g_c_loss
         self.g_loss = G_loss
         self.d_loss = D_loss
+
+    def test(self, n):
+        z1, c1, d1 = sample(16)
+        z2, c2, d2 = sample_d(16)
+        z3, c3, d3 = sample_c(16)
+        fake_image1 = self.G(tf.concat([z1, d1, c1], 1))
+        draw(fake_image1, n, 'random')
+        fake_image2 = self.G(tf.concat([z2, d2, c2], 1))
+        draw(fake_image2, n, 'vary_d')
+        fake_image3 = self.G(tf.concat([z3, d3, c3], 1))
+        draw(fake_image3, n, 'vary_c')
