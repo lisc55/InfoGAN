@@ -14,10 +14,10 @@ def sample(size):
 
 
 def sample_d(size):
-    z = np.random.uniform(-1, 1, size=(10, 62)).astype('float32')
-    z = np.tile(z, size//10).reshape((size, 62))
-    c = np.random.uniform(-1, 1, size=(10, 2)).astype('float32')
-    c = np.tile(c, size//10).reshape((size, 2))
+    z = np.random.uniform(-1, 1, size=(1, 62)).astype('float32')
+    z = np.tile(z, size).reshape((size, 62))
+    c = np.random.uniform(-1, 1, size=(1, 2)).astype('float32')
+    c = np.tile(c, size).reshape((size, 2))
     d = np.zeros((size, 10)).astype('float32')
     for i in range(size):
         d[i][i % 10] = 1
@@ -33,10 +33,7 @@ def sample_c(size):
     for i in range(size):
         d[i][0] = 1
     for i in range(size):
-        if i >= size//2:
-            c[i][0] = 0.2 + 0.05 * i
-        else:
-            c[i][0] = -0.2 - 0.05 * i
+        c[i][1] = -2.0 + 0.1 * i
     return z, c, d
 
 
