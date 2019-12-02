@@ -33,7 +33,10 @@ def sample_c(size):
     for i in range(size):
         d[i][0] = 1
     for i in range(size):
-        c[i][1] = -2.0 + 0.1 * i
+        if i >= size//2:
+            c[i][1] = 0.1 + 0.1 * i
+        else:
+            c[i][1] = -0.1 - 0.1 * i
     return z, c, d
 
 
