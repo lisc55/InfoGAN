@@ -6,16 +6,17 @@ import os
 import time
 import multiprocessing
 import numpy as np
+from sklearn import utils
 
 NEPOCH = 100
 batch_size = 50
 train_data = load_mnist_data()
-train_data = np.reshape(train_data, (-1, batch_size, 28, 28, 1))
+train_data = utils.shuffle(np.reshape(train_data, (-1, batch_size, 28, 28, 1)))
 model = InfoGAN()
 model.G.train()
 model.D.train()
 d_optimizer = tf.optimizers.Adam(2e-4, 0.5)
-g_optimizer = tf.optimizers.Adam(2e-4, 0.5)
+g_optimizer = tf.optimizers.Adam(1e-3, 0.5)
 q_optimizer = tf.optimizers.Adam(2e-4, 0.5)
 his_d_loss = []
 his_g_loss = []
@@ -24,7 +25,7 @@ count = 0
 with open("log", "a") as l:
     for epoch in range(NEPOCH):
         model.test(epoch)
-        nstep = 50000//batch_size
+        nstep = 50000 // batch_size
         for step, batch_images in enumerate(train_data):
             step_time = time.time()
             with tf.GradientTape(persistent=True) as tape:
@@ -32,10 +33,15 @@ with open("log", "a") as l:
                 model.cost(batch_images, z, c, d)
                 d_loss, g_loss, q_loss = model.d_loss, model.g_loss, model.mutual_info
             grad = tape.gradient(g_loss, model.G.trainable_weights)
+            # clipping
+            grad = [tf.clip_by_norm(
+                g, 1.0) if g is not None else g for g in grad]
             g_optimizer.apply_gradients(zip(grad, model.G.trainable_weights))
             grad = tape.gradient(d_loss, sum([
                 model.D.get_layer('first').all_weights,
                 model.D.get_layer('d1').all_weights], []))
+            grad = [tf.clip_by_norm(
+                g, 1.0) if g is not None else g for g in grad]
             d_optimizer.apply_gradients(zip(grad, sum([
                 model.D.get_layer('first').all_weights,
                 model.D.get_layer('d1').all_weights], [])))
@@ -44,22 +50,25 @@ with open("log", "a") as l:
                 model.D.get_layer('q1').all_weights, model.D.get_layer(
                     'q2').all_weights,
                 model.D.get_layer('q3').all_weights], []))
+            grad = [tf.clip_by_norm(
+                g, 1.0) if g is not None else g for g in grad]
             q_optimizer.apply_gradients(zip(grad, sum([
                 model.D.get_layer('first').all_weights,
                 model.D.get_layer('q1').all_weights, model.D.get_layer(
                     'q2').all_weights,
                 model.D.get_layer('q3').all_weights], [])))
             del tape
-            his_d_loss.append(d_loss)
-            his_g_loss.append(g_loss)
-            his_q_loss.append(q_loss)
+            if count % 50 == 1:
+                his_d_loss.append(d_loss)
+                his_g_loss.append(g_loss)
+                his_q_loss.append(q_loss)
             print("Epoch: [{}/{}] [{}/{}] took: {:.3f}s, d_loss: {:.5f}, g_loss: {:.5f}, q_loss: {:.5f}"
                   .format(epoch, NEPOCH, step, nstep, time.time()-step_time, d_loss, g_loss, q_loss))
             l.write("Epoch: [{}/{}] [{}/{}] took: {:.3f}s, d_loss: {:.5f}, g_loss: {:.5f}, q_loss: {:.5f}"
                     .format(epoch, NEPOCH, step, nstep, time.time()-step_time, d_loss, g_loss, q_loss)+'\n')
             count += 1
-            if count % 100 == 0:
-                xaxis = [i for i in range(count)]
+            if count % 5000 == 0:
+                xaxis = [i for i in range(count//50)]
                 plt.plot(xaxis, his_d_loss)
                 plt.plot(xaxis, his_g_loss)
                 plt.plot(xaxis, his_q_loss)

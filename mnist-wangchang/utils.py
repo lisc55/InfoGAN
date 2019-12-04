@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 
 
 def sample(size):
-    z = np.random.uniform(-1, 1, size=(size, 62)).astype('float32')
-    c = np.random.uniform(-1, 1, size=(size, 2)).astype('float32')
+    z = np.random.normal(size=(size, 62)).astype('float32')
+    c = np.random.normal(size=(size, 2)).astype('float32')
     d = np.zeros((size, 10)).astype('float32')
     idx = np.random.randint(0, 10, size=size)
     d[np.arange(size), idx] = 1
@@ -14,9 +14,9 @@ def sample(size):
 
 
 def sample_d(size):
-    z = np.random.uniform(-1, 1, size=(1, 62)).astype('float32')
+    z = np.random.normal(size=(1, 62)).astype('float32')
     z = np.tile(z, size).reshape((size, 62))
-    c = np.random.uniform(-1, 1, size=(1, 2)).astype('float32')
+    c = np.random.normal(size=(1, 2)).astype('float32')
     c = np.tile(c, size).reshape((size, 2))
     d = np.zeros((size, 10)).astype('float32')
     for i in range(size):
@@ -25,18 +25,34 @@ def sample_d(size):
 
 
 def sample_c(size):
-    z = np.random.uniform(-1, 1, size=(1, 62)).astype('float32')
+    z = np.random.normal(size=(1, 62)).astype('float32')
     z = np.tile(z, size).reshape((size, 62))
-    c = np.random.uniform(-1, 1, size=(1, 2)).astype('float32')
+    c = np.random.normal(size=(1, 2)).astype('float32')
     c = np.tile(c, size).reshape((size, 2))
     d = np.zeros((size, 10)).astype('float32')
     for i in range(size):
         d[i][0] = 1
     for i in range(size):
-        if i >= size//2:
-            c[i][1] = 0.1 + 0.1 * i
+        if i >= size // 2:
+            c[i][1] = 0.8 + 0.08 * (i - size // 2)
         else:
-            c[i][1] = -0.1 - 0.1 * i
+            c[i][1] = -0.8 - 0.08 * i
+    return z, c, d
+
+
+def sample_c2(size):
+    z = np.random.normal(size=(1, 62)).astype('float32')
+    z = np.tile(z, size).reshape((size, 62))
+    c = np.random.normal(size=(1, 2)).astype('float32')
+    c = np.tile(c, size).reshape((size, 2))
+    d = np.zeros((size, 10)).astype('float32')
+    for i in range(size):
+        d[i][0] = 1
+    for i in range(size):
+        if i >= size // 2:
+            c[i][0] = 0.8 + 0.08 * (i - size // 2)
+        else:
+            c[i][0] = -0.8 - 0.08 * i
     return z, c, d
 
 
@@ -48,20 +64,12 @@ def load_mnist_data():
 
 def draw(fake_image, n, name):
     plt.figure()
-    for i in range(1, 50+1):
+    for i in range(1, 50 + 1):
         plt.subplot(5, 10, i)
-        t = np.reshape(fake_image[i-1], (28, 28))
+        t = np.reshape(fake_image[i - 1], (28, 28))
         plt.xticks([])
         plt.yticks([])
         plt.imshow(t, cmap='gray')
-    plt.savefig('results/'+name+str(n)+'.jpg')
+    plt.savefig('results/' + name + str(n) + '.jpg')
     plt.clf()
     plt.close()
-
-
-def softmax(x):
-    sum_raw = np.sum(np.exp(x), axis=-1)
-    x1 = np.ones(np.shape(x))
-    for i in range(np.shape(x)[0]):
-        x1[i] = np.exp(x[i])/sum_raw[i]
-    return x1
