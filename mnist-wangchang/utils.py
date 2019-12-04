@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 
 
 def sample(size):
-    z = np.random.normal(size=(size, 62)).astype('float32')
-    c = np.random.normal(size=(size, 2)).astype('float32')
+    z = np.random.uniform(-1, 1, size=(size, 62)).astype('float32')
+    c = np.random.uniform(-1, 1, size=(size, 2)).astype('float32')
     d = np.zeros((size, 10)).astype('float32')
     idx = np.random.randint(0, 10, size=size)
     d[np.arange(size), idx] = 1
@@ -34,9 +34,9 @@ def sample_c(size):
         d[i][0] = 1
     for i in range(size):
         if i >= size // 2:
-            c[i][1] = 0.8 + 0.08 * (i - size // 2)
+            c[i][1] = 0.8 + 0.05 * (i - size // 2)
         else:
-            c[i][1] = -0.8 - 0.08 * i
+            c[i][1] = -0.8 - 0.05 * i
     return z, c, d
 
 
@@ -50,9 +50,9 @@ def sample_c2(size):
         d[i][0] = 1
     for i in range(size):
         if i >= size // 2:
-            c[i][0] = 0.8 + 0.08 * (i - size // 2)
+            c[i][0] = 0.8 + 0.05 * (i - size // 2)
         else:
-            c[i][0] = -0.8 - 0.08 * i
+            c[i][0] = -0.8 - 0.05 * i
     return z, c, d
 
 
