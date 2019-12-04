@@ -1,4 +1,4 @@
-## Current Process
+## Current Progress
 
 ### Training Tricks
 
