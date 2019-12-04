@@ -14,9 +14,9 @@ def sample(size):
 
 
 def sample_d(size):
-    z = np.random.normal(size=(1, 62)).astype('float32')
+    z = np.random.uniform(-1, 1, size=(1, 62)).astype('float32')
     z = np.tile(z, size).reshape((size, 62))
-    c = np.random.normal(size=(1, 2)).astype('float32')
+    c = np.random.uniform(-1, 1, size=(1, 2)).astype('float32')
     c = np.tile(c, size).reshape((size, 2))
     d = np.zeros((size, 10)).astype('float32')
     for i in range(size):
@@ -25,9 +25,9 @@ def sample_d(size):
 
 
 def sample_c(size):
-    z = np.random.normal(size=(1, 62)).astype('float32')
+    z = np.random.uniform(-1, 1, size=(1, 62)).astype('float32')
     z = np.tile(z, size).reshape((size, 62))
-    c = np.random.normal(size=(1, 2)).astype('float32')
+    c = np.random.uniform(-1, 1, size=(1, 2)).astype('float32')
     c = np.tile(c, size).reshape((size, 2))
     d = np.zeros((size, 10)).astype('float32')
     for i in range(size):
@@ -41,9 +41,9 @@ def sample_c(size):
 
 
 def sample_c2(size):
-    z = np.random.normal(size=(1, 62)).astype('float32')
+    z = np.random.uniform(-1, 1, size=(1, 62)).astype('float32')
     z = np.tile(z, size).reshape((size, 62))
-    c = np.random.normal(size=(1, 2)).astype('float32')
+    c = np.random.uniform(-1, 1, size=(1, 2)).astype('float32')
     c = np.tile(c, size).reshape((size, 2))
     d = np.zeros((size, 10)).astype('float32')
     for i in range(size):
