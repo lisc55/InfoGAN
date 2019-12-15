@@ -12,6 +12,7 @@ class FLAGS(object):
 		self.output_size = 32
 		self.n_channel = 3
 		self.save_every_epoch = 1
-		self.data_dir = "CelebA"
+		self.save_every_it = 50
+		self.data_dir = "test_CelebA"
 		self.checkpoint_dir = "checkpoint"
 flags = FLAGS()
