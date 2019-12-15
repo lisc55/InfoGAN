@@ -33,7 +33,7 @@ def gen_eval_noise():
 	noise = []
 	for k in range(flags.n_categorical):
 		noise.append(kth_categorical(k))
-	return np.vstack(noise)
+	return np.vstack(noise).astype(np.float32)
 
 def calc_mutual(output, target):
 	mutual = 0
@@ -42,7 +42,7 @@ def calc_mutual(output, target):
 		mutual += tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
 			labels=target[:, offset : offset + flags.dim_categorical], logits=output[:, offset : offset + flags.dim_categorical]))
 		offset += flags.dim_categorical
-	return mutual / flags.n_categorical
+	return mutual
 
 def train():
 	images, images_path = get_celebA(flags.output_size, flags.n_epoch, flags.batch_size)
@@ -94,7 +94,7 @@ def train():
 				his_d_loss.append(d_loss)
 				his_mutual.append(mutual)
 
-		xaxis = [i for i in range(count // flags.save_every_it)]
+		xaxis = [i for i in range(len(his_g_loss))]
 		plt.plot(xaxis, his_d_loss)
 		plt.plot(xaxis, his_g_loss)
 		plt.plot(xaxis, his_mutual)
