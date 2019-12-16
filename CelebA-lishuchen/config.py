@@ -15,4 +15,5 @@ class FLAGS(object):
 		self.save_every_it = 50
 		self.data_dir = "test_CelebA"
 		self.checkpoint_dir = "checkpoint"
+		self.result_dir = "result"
 flags = FLAGS()

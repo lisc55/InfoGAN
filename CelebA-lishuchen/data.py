@@ -4,9 +4,8 @@ import tensorflow as tf
 import tensorlayer as tl
 from config import flags
 
-tl.logging.set_verbosity(tl.logging.DEBUG)
-
 tl.files.exists_or_mkdir(flags.checkpoint_dir)
+tl.files.exists_or_mkdir(flags.result_dir)
 
 def get_celebA(output_size, n_epoch, batch_size):
 	images_path = tl.files.load_file_list(path=flags.data_dir, regx='.*.jpg', keep_prefix=True, printable=False)

@@ -19,7 +19,7 @@ def get_G(shape):
 
 	return tl.models.Model(inputs=ni, outputs=nn, name='G')
 
-def get_DQ(shape):
+def get_base(shape):
 	w_init = tf.random_normal_initializer(stddev=0.02)
 	gamma_init = tf.random_normal_initializer(1., 0.02)
 	lrelu = lambda x : tf.nn.leaky_relu(x, flags.leaky_rate)
@@ -31,8 +31,19 @@ def get_DQ(shape):
 	nn = Conv2d(n_filter=256, filter_size=(4, 4), strides=(2, 2), W_init=w_init, b_init=None)(nn)
 	nn = BatchNorm2d(decay=0.9, act=lrelu, gamma_init=gamma_init)(nn)
 	nn = Flatten()(nn)
-	d = Dense(n_units=1, W_init=w_init)(nn)
-	q = Dense(n_units=128, W_init=w_init, b_init=None)(nn)
+	return tl.models.Model(inputs=ni, outputs=nn, name='base')
+
+def get_DQ(shape):
+	w_init = tf.random_normal_initializer(stddev=0.02)
+	gamma_init = tf.random_normal_initializer(1., 0.02)
+	lrelu = lambda x : tf.nn.leaky_relu(x, flags.leaky_rate)
+	
+	base_layer = get_base(shape).as_layer()
+	ni = Input(shape)
+	d = base_layer(ni)
+	q = base_layer(ni)
+	d = Dense(n_units=1, W_init=w_init)(d)
+	q = Dense(n_units=128, W_init=w_init, b_init=None)(q)
 	q = BatchNorm(decay=0.9, act=lrelu, gamma_init=gamma_init)(q)
 	q = Dense(n_units=flags.n_categorical * flags.dim_categorical, W_init=w_init)(q)
 	

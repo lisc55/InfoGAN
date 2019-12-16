@@ -101,7 +101,7 @@ def train():
 		plt.legend(['D_Loss', 'G_Loss', 'Mutual_Info'])
 		plt.xlabel('Iterations')
 		plt.ylabel('Loss')
-		plt.savefig('result/loss.jpg')
+		plt.savefig(f'{flags.result_dir}/loss.jpg')
 		plt.clf()
 		plt.close()
 
