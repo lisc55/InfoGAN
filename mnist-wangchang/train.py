@@ -1,81 +1,84 @@
-from utils import *
-from model import *
 import tensorflow as tf
-import tensorlayer as tl
-import os
-import time
-import multiprocessing
 import numpy as np
-from sklearn import utils
+import os
+import matplotlib.pyplot as plt
+from model import Generator, Discriminator, Auxiliary, q_sample
+from config import flags
+from utils import sample, d_loss, g_loss, info, train_display_img
+import tensorlayer as tl
+import time
 
-NEPOCH = 100
-batch_size = 50
-train_data = load_mnist_data()
-train_data = utils.shuffle(np.reshape(train_data, (-1, batch_size, 28, 28, 1)))
-model = InfoGAN()
-model.G.train()
-model.D.train()
-d_optimizer = tf.optimizers.Adam(2e-4, 0.5)
-g_optimizer = tf.optimizers.Adam(1e-3, 0.5)
-q_optimizer = tf.optimizers.Adam(2e-4, 0.5)
-his_d_loss = []
-his_g_loss = []
-his_q_loss = []
-count = 0
-with open("log", "a") as l:
-    for epoch in range(NEPOCH):
-        model.test(epoch)
-        nstep = 50000 // batch_size
-        for step, batch_images in enumerate(train_data):
-            step_time = time.time()
-            with tf.GradientTape(persistent=True) as tape:
-                z, c, d = sample(batch_size)
-                model.cost(batch_images, z, c, d)
-                d_loss, g_loss, q_loss = model.d_loss, model.g_loss, model.mutual_info
-            grad = tape.gradient(g_loss, model.G.trainable_weights)
-            # clipping
-            grad = [tf.clip_by_norm(
-                g, 1.0) if g is not None else g for g in grad]
-            g_optimizer.apply_gradients(zip(grad, model.G.trainable_weights))
-            grad = tape.gradient(d_loss, sum([
-                model.D.get_layer('first').all_weights,
-                model.D.get_layer('d1').all_weights], []))
-            grad = [tf.clip_by_norm(
-                g, 1.0) if g is not None else g for g in grad]
-            d_optimizer.apply_gradients(zip(grad, sum([
-                model.D.get_layer('first').all_weights,
-                model.D.get_layer('d1').all_weights], [])))
-            grad = tape.gradient(q_loss, sum([
-                model.D.get_layer('first').all_weights,
-                model.D.get_layer('q1').all_weights, model.D.get_layer(
-                    'q2').all_weights,
-                model.D.get_layer('q3').all_weights], []))
-            grad = [tf.clip_by_norm(
-                g, 1.0) if g is not None else g for g in grad]
-            q_optimizer.apply_gradients(zip(grad, sum([
-                model.D.get_layer('first').all_weights,
-                model.D.get_layer('q1').all_weights, model.D.get_layer(
-                    'q2').all_weights,
-                model.D.get_layer('q3').all_weights], [])))
-            del tape
-            if count % 50 == 1:
-                his_d_loss.append(d_loss)
-                his_g_loss.append(g_loss)
-                his_q_loss.append(q_loss)
-            print("Epoch: [{}/{}] [{}/{}] took: {:.3f}s, d_loss: {:.5f}, g_loss: {:.5f}, q_loss: {:.5f}"
-                  .format(epoch, NEPOCH, step, nstep, time.time()-step_time, d_loss, g_loss, q_loss))
-            l.write("Epoch: [{}/{}] [{}/{}] took: {:.3f}s, d_loss: {:.5f}, g_loss: {:.5f}, q_loss: {:.5f}"
-                    .format(epoch, NEPOCH, step, nstep, time.time()-step_time, d_loss, g_loss, q_loss)+'\n')
-            count += 1
-            if count % 5000 == 0:
-                xaxis = [i for i in range(count//50)]
-                plt.plot(xaxis, his_d_loss)
-                plt.plot(xaxis, his_g_loss)
-                plt.plot(xaxis, his_q_loss)
-                plt.legend(['D_Loss', 'G_Loss', 'Q_Loss'])
-                plt.xlabel('Iterations')
-                plt.ylabel('Loss')
-                plt.savefig('results/loss.jpg')
-                plt.clf()
-                plt.close()
-l.close()
+(Xtr, ytr), (_, _) = tf.keras.datasets.mnist.load_data()
+Xtr = (Xtr/127.5)-1
+Xtr = Xtr.reshape([-1, 28, 28, 1]).astype("float32")
+dataset = tf.data.Dataset.from_tensor_slices(Xtr)
+dataset = dataset.shuffle(30000).batch(flags.batch_size)
+
+D = Discriminator([None, 28, 28, 1])
+G = Generator([None, 74])
+Q = Auxiliary([None, 1024])
+
+D.train()
+G.train()
+Q.train()
+
+gen_optimizer = tf.keras.optimizers.Adam(flags.G_learning_rate)
+dis_optimizer = tf.keras.optimizers.Adam(flags.D_learning_rate)
+
+
+def train_step(imgs):
+    noise, z_con1, z_con2, z_cat = sample(flags.batch_size)
+    with tf.GradientTape() as gtape, tf.GradientTape() as dtape:
+        fake_imgs = G(noise)
+        real_output, _ = D(imgs)
+        fake_output, mid = D(fake_imgs)
+        cat, con1_mu, con1_var, con2_mu, con2_var = Q(mid)
+        fkcat, fkcon1, fkcon2 = cat, q_sample(
+            con1_mu, tf.exp(con1_var)), q_sample(con2_mu, tf.exp(con2_var))
+        info_loss, c1, c2, sce = info(
+            fkcon1, fkcon2, fkcat, z_con1, z_con2, z_cat)
+        gen_loss = g_loss(fake_output)
+        dis_loss = d_loss(real_output, fake_output)
+        gi = gen_loss+info_loss
+        di = dis_loss+info_loss
+
+    g_grd = gtape.gradient(gi, G.trainable_weights+Q.trainable_weights)
+    d_grd = dtape.gradient(di, D.trainable_weights)
+    gen_optimizer.apply_gradients(zip(g_grd, G.trainable_weights))
+    dis_optimizer.apply_gradients(zip(d_grd, D.trainable_weights))
+
+    return gen_loss, dis_loss, info_loss
+
+
+def train(dataset, epochs):
+    step = 0
+    gen_loss = []
+    dis_loss = []
+    info_loss = []
+    for epoch in range(epochs):
+        for batch in dataset:
+            gen, dis, info = train_step(batch)
+            gen_loss.append(gen)
+            dis_loss.append(dis)
+            info_loss.append(info)
+            mg = tf.reduce_mean(gen_loss).numpy()
+            md = tf.reduce_mean(dis_loss).numpy()
+            mi = tf.reduce_mean(info_loss).numpy()
+            print("[{}]    {:05d}/{:03d}    Generator: {:.4f}    Discriminator: {:.4f}    Info: {:.4f}".format(
+                time.strftime('%H:%M:%S', time.localtime(time.time())), step % 60000+1, epoch+1, mg, md, mi))
+            step += 1
+            if step % 100 == 0:
+                train_display_img(G, step)
+
+        G.save("./models/model{}.h5".format(epoch+1), save_weights=True)
+
+    plt.figure(figsize=(20, 8))
+    plt.plot(gen_loss, label="generator")
+    plt.plot(dis_loss, label="discriminator")
+    plt.plot(info_loss, label="mutual_info")
+    plt.legend()
+    plt.suptitle("GAN loss")
+    plt.savefig("loss")
+
+
+train(dataset, flags.n_epoch)
