@@ -79,7 +79,7 @@ def train():
 				g_loss = tl.cost.sigmoid_cross_entropy(output=fake_logits, target=tf.ones_like(fake_logits), name='g_loss_fake')
 
 				mutual = calc_mutual(fake_cat, c)
-				d_loss += mutual
+				d_loss -= mutual
 				g_loss += mutual
 
 			grad = tape.gradient(g_loss, G.trainable_weights)
