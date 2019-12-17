@@ -22,8 +22,8 @@ D.train()
 G.train()
 Q.train()
 
-gen_optimizer = tf.keras.optimizers.Adam(flags.G_learning_rate)
-dis_optimizer = tf.keras.optimizers.Adam(flags.D_learning_rate)
+gen_optimizer = tf.optimizers.Adam(flags.G_learning_rate, 0.5)
+dis_optimizer = tf.optimizers.Adam(flags.D_learning_rate, 0.5)
 
 
 def train_step(imgs):
@@ -35,8 +35,7 @@ def train_step(imgs):
         cat, con1_mu, con1_var, con2_mu, con2_var = Q(mid)
         fkcat, fkcon1, fkcon2 = cat, q_sample(
             con1_mu, tf.exp(con1_var)), q_sample(con2_mu, tf.exp(con2_var))
-        info_loss, c1, c2, sce = info(
-            fkcon1, fkcon2, fkcat, z_con1, z_con2, z_cat)
+        info_loss = info(fkcon1, fkcon2, fkcat, z_con1, z_con2, z_cat)
         gen_loss = g_loss(fake_output)
         dis_loss = d_loss(real_output, fake_output)
         gi = gen_loss+info_loss
@@ -44,7 +43,8 @@ def train_step(imgs):
 
     g_grd = gtape.gradient(gi, G.trainable_weights+Q.trainable_weights)
     d_grd = dtape.gradient(di, D.trainable_weights)
-    gen_optimizer.apply_gradients(zip(g_grd, G.trainable_weights))
+    gen_optimizer.apply_gradients(
+        zip(g_grd, G.trainable_weights+Q.trainable_weights))
     dis_optimizer.apply_gradients(zip(d_grd, D.trainable_weights))
 
     return gen_loss, dis_loss, info_loss
@@ -64,21 +64,21 @@ def train(dataset, epochs):
             mg = tf.reduce_mean(gen_loss).numpy()
             md = tf.reduce_mean(dis_loss).numpy()
             mi = tf.reduce_mean(info_loss).numpy()
-            print("[{}]    {:05d}/{:03d}    Generator: {:.4f}    Discriminator: {:.4f}    Info: {:.4f}".format(
+            print("[{}]\t{:05d}/{:03d}\tGenerator: {:.4f}\tDiscriminator: {:.4f}\tInfo: {:.4f}".format(
                 time.strftime('%H:%M:%S', time.localtime(time.time())), step % 60000+1, epoch+1, mg, md, mi))
             step += 1
             if step % 100 == 0:
                 train_display_img(G, step)
+                plt.figure(figsize=(20, 8))
+                plt.plot(gen_loss, label="generator")
+                plt.plot(dis_loss, label="discriminator")
+                plt.plot(info_loss, label="mutual_info")
+                plt.legend()
+                plt.suptitle("GAN loss")
+                plt.savefig("loss")
+                plt.close()
 
         G.save("./models/model{}.h5".format(epoch+1), save_weights=True)
-
-    plt.figure(figsize=(20, 8))
-    plt.plot(gen_loss, label="generator")
-    plt.plot(dis_loss, label="discriminator")
-    plt.plot(info_loss, label="mutual_info")
-    plt.legend()
-    plt.suptitle("GAN loss")
-    plt.savefig("loss")
 
 
 train(dataset, flags.n_epoch)

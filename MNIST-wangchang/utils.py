@@ -62,4 +62,4 @@ def info(fkcon1, fkcon2, fkcat, z_con1, z_con2, z_cat):
     sce = tf.keras.losses.CategoricalCrossentropy(
         from_logits=True)(z_cat, fkcat)
     info_loss = c1 + c2 + sce
-    return info_loss, c1, c2, sce
+    return info_loss
