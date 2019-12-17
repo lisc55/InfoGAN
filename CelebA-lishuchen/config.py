@@ -14,6 +14,7 @@ class FLAGS(object):
 		self.n_channel = 3
 		self.save_every_epoch = 1
 		self.save_every_it = 100
+		self.n_sample = 5
 		self.data_dir = "test_CelebA"
 		self.checkpoint_dir = "checkpoint"
 		self.result_dir = "result"

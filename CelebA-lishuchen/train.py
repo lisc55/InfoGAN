@@ -1,6 +1,7 @@
 import os
 import time
 import numpy as np
+np.set_printoptions(threshold=np.inf, precision=1, linewidth=np.inf)
 import tensorflow as tf
 import tensorlayer as tl
 from matplotlib import pyplot as plt
@@ -29,11 +30,8 @@ def kth_categorical(k):
 		noise.append(np.hstack(cs))
 	return np.vstack(noise)
 
-def gen_eval_noise():
-	noise = []
-	for k in range(flags.n_categorical):
-		noise.append(kth_categorical(k))
-	return np.vstack(noise).astype(np.float32)
+def gen_eval_noise(k, n_sample):
+	return np.vstack([kth_categorical(k) for i in range(n_sample)]).astype(np.float32)
 
 def calc_mutual(output, target):
 	mutual = 0
@@ -86,7 +84,6 @@ def train():
 
 				mutual = calc_mutual(fake_cat, c)
 				g_loss += mutual
-				d_loss += mutual
 				
 			grad = tape.gradient(g_loss, G.trainable_weights + Q.trainable_weights)
 			g_optimizer.apply_gradients(zip(grad, G.trainable_weights + Q.trainable_weights))
@@ -113,10 +110,11 @@ def train():
 		G.save_weights(f'{flags.checkpoint_dir}/G.npz', format='npz')
 		D.save_weights(f'{flags.checkpoint_dir}/D.npz', format='npz')
 		G.eval()
-		z = gen_eval_noise()
-		result = G(z)
+		for k in range(flags.n_categorical):
+			z = gen_eval_noise(k, flags.n_sample)
+			result = G(z)
+			tl.visualize.save_images(result.numpy(), [flags.n_sample, flags.dim_categorical], f'result/train_{epoch}_{k}.png')
 		G.train()
-		tl.visualize.save_images(result.numpy(), [flags.n_categorical, flags.dim_categorical], f'result/train_{epoch}.png')
 
 if __name__ == "__main__":
 	train()
