@@ -1,5 +1,6 @@
 import tensorflow as tf
 import tensorlayer as tl
+from config import flags
 
 
 def Generator(shape):
@@ -7,16 +8,16 @@ def Generator(shape):
     gamma_init = tf.random_normal_initializer(1.0, 0.02)
     ni = tl.layers.Input(shape)
     nn = tl.layers.Dense(n_units=1024, b_init=None, W_init=w_init)(ni)
-    nn = tl.layers.BatchNorm(decay=0.99, epsilon=0.001,
-                             act=tf.nn.relu, gamma_init=gamma_init)(nn)
+    nn = tl.layers.BatchNorm(decay=0.9, act=tf.nn.relu,
+                             gamma_init=gamma_init)(nn)
     nn = tl.layers.Dense(n_units=7*7*128, b_init=None, W_init=w_init)(nn)
-    nn = tl.layers.BatchNorm(decay=0.99, epsilon=0.001,
-                             act=tf.nn.relu, gamma_init=gamma_init)(nn)
+    nn = tl.layers.BatchNorm(decay=0.9, act=tf.nn.relu,
+                             gamma_init=gamma_init)(nn)
     nn = tl.layers.Reshape([-1, 7, 7, 128])(nn)
     nn = tl.layers.DeConv2d(64, (4, 4), strides=(
         2, 2), padding="SAME", W_init=w_init)(nn)
-    nn = tl.layers.BatchNorm(decay=0.99, epsilon=0.001,
-                             act=tf.nn.relu, gamma_init=gamma_init)(nn)
+    nn = tl.layers.BatchNorm(decay=0.9, act=tf.nn.relu,
+                             gamma_init=gamma_init)(nn)
     nn = tl.layers.DeConv2d(
         1, (4, 4), strides=(2, 2), padding="SAME", act=tf.nn.tanh, W_init=w_init)(nn)
     return tl.models.Model(inputs=ni, outputs=nn)
@@ -27,15 +28,15 @@ def Discriminator(shape):
     gamma_init = tf.random_normal_initializer(1.0, 0.02)
     ni = tl.layers.Input(shape)
     nn = tl.layers.Conv2d(64, (4, 4), strides=(
-        2, 2), act=lambda x: tl.act.lrelu(x, 0.3), padding="SAME", W_init=w_init)(ni)
+        2, 2), act=lambda x: tl.act.lrelu(x, flags.leaky_rate), padding="SAME", W_init=w_init)(ni)
     nn = tl.layers.Conv2d(128, (4, 4), strides=(
         2, 2), padding="SAME", W_init=w_init)(nn)
-    nn = tl.layers.BatchNorm2d(
-        decay=0.99, epsilon=0.001, act=lambda x: tl.act.lrelu(x, 0.3), gamma_init=gamma_init)(nn)
+    nn = tl.layers.BatchNorm2d(decay=0.9, act=lambda x: tl.act.lrelu(
+        x, flags.leaky_rate), gamma_init=gamma_init)(nn)
     nn = tl.layers.Flatten()(nn)
     nn = tl.layers.Dense(n_units=1024, W_init=w_init)(nn)
-    nn = tl.layers.BatchNorm(decay=0.99, epsilon=0.001,
-                             act=lambda x: tl.act.lrelu(x, 0.3), gamma_init=gamma_init)(nn)
+    nn = tl.layers.BatchNorm(decay=0.9, act=lambda x: tl.act.lrelu(
+        x, flags.leaky_rate), gamma_init=gamma_init)(nn)
     mid = nn
     nn = tl.layers.Dense(n_units=1, W_init=w_init)(nn)
     return tl.models.Model(inputs=ni, outputs=[nn, mid])
@@ -53,8 +54,8 @@ def Auxiliary(shape):
     ni = tl.layers.Input(shape)
     nn = tl.layers.Dense(n_units=128, W_init=w_init)(ni)
 
-    nn = tl.layers.BatchNorm(decay=0.99, epsilon=0.001,
-                             act=lambda x: tl.act.lrelu(x, 0.3), gamma_init=gamma_init)(nn)
+    nn = tl.layers.BatchNorm(decay=0.9, act=lambda x: tl.act.lrelu(
+        x, flags.leaky_rate), gamma_init=gamma_init)(nn)
 
     cat = tl.layers.Dense(n_units=10, W_init=w_init)(nn)
     con1_mu = tl.layers.Dense(n_units=2, W_init=w_init)(nn)

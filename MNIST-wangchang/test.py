@@ -29,7 +29,9 @@ def sample(z, size, cat=-1, c1=None, c2=None):
     return noise
 
 
-generator = tl.models.Model.load('./models/model100.h5', load_weights=True)
+number = int(input())
+generator = tl.models.Model.load(
+    './models/model{}.h5'.format(number), load_weights=True)
 generator.eval()
 
 output_image = []
