@@ -73,7 +73,7 @@ plt.savefig("./test/c1_res.png")
 plt.close()
 
 output_image = []
-cc = np.linspace(-2.0, 2.0, 10)
+cc = np.linspace(-1.5, 1.5, 10)
 z = tfd.Uniform(low=-1.0, high=1.0).sample([1, 62])
 for i in range(5):
     imgs = []
