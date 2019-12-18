@@ -7,6 +7,7 @@ from config import flags
 from utils import sample, d_loss, g_loss, info, train_display_img
 import tensorlayer as tl
 import time
+from tqdm import *
 
 (Xtr, ytr), (_, _) = tf.keras.datasets.mnist.load_data()
 Xtr = (Xtr/127.5)-1
@@ -56,29 +57,30 @@ def train(dataset, epochs):
     dis_loss = []
     info_loss = []
     for epoch in range(epochs):
-        for batch in dataset:
+        for batch in tqdm(dataset):
             gen, dis, info = train_step(batch)
             gen_loss.append(gen)
             dis_loss.append(dis)
             info_loss.append(info)
-            mg = tf.reduce_mean(gen_loss).numpy()
-            md = tf.reduce_mean(dis_loss).numpy()
-            mi = tf.reduce_mean(info_loss).numpy()
-            print("[{}]\t{:05d}/{:03d}\tGenerator: {:.4f}\tDiscriminator: {:.4f}\tInfo: {:.4f}".format(
-                time.strftime('%H:%M:%S', time.localtime(time.time())), step % 60000+1, epoch+1, mg, md, mi))
             step += 1
             if step % 100 == 0:
                 train_display_img(G, step)
-                plt.figure(figsize=(20, 8))
-                plt.plot(gen_loss, label="generator")
-                plt.plot(dis_loss, label="discriminator")
-                plt.plot(info_loss, label="mutual_info")
-                plt.legend()
-                plt.suptitle("GAN loss")
-                plt.savefig("loss")
-                plt.close()
 
         G.save("./models/model{}.h5".format(epoch+1), save_weights=True)
+        mg = tf.reduce_mean(gen_loss).numpy()
+        md = tf.reduce_mean(dis_loss).numpy()
+        mi = tf.reduce_mean(info_loss).numpy()
+        print("[{}]\t{:03d}\tGenerator: {:.4f}\tDiscriminator: {:.4f}\tInfo: {:.4f}".format(
+            time.strftime('%H:%M:%S', time.localtime(time.time())), epoch+1, mg, md, mi))
+    
+    plt.figure(figsize=(20, 8))
+    plt.plot(gen_loss, label="generator")
+    plt.plot(dis_loss, label="discriminator")
+    plt.plot(info_loss, label="mutual_info")
+    plt.legend()
+    plt.suptitle("GAN loss")
+    plt.savefig("loss")
+    plt.close()
 
 
 train(dataset, flags.n_epoch)
