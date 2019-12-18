@@ -1,8 +1,5 @@
 import tensorflow as tf
 import tensorlayer as tl
-import imageio
-import natsort
-import glob
 import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow_probability import distributions as tfd
