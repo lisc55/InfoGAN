@@ -1,12 +1,13 @@
 import os
 import time
 import numpy as np
+np.set_printoptions(threshold=np.inf, precision=1, linewidth=np.inf)
 import tensorflow as tf
 import tensorlayer as tl
 from matplotlib import pyplot as plt
 from config import flags
 from data import get_celebA
-from model import get_G, get_DQ
+from model import get_G, get_base, get_D, get_Q
 
 def categorical_code():
 	indices = np.random.randint(0, flags.dim_categorical, size=(flags.batch_size))
@@ -29,11 +30,8 @@ def kth_categorical(k):
 		noise.append(np.hstack(cs))
 	return np.vstack(noise)
 
-def gen_eval_noise():
-	noise = []
-	for k in range(flags.n_categorical):
-		noise.append(kth_categorical(k))
-	return np.vstack(noise).astype(np.float32)
+def gen_eval_noise(k, n_sample):
+	return np.vstack([kth_categorical(k) for i in range(n_sample)]).astype(np.float32)
 
 def calc_mutual(output, target):
 	mutual = 0
@@ -47,13 +45,17 @@ def calc_mutual(output, target):
 def train():
 	images, images_path = get_celebA(flags.output_size, flags.n_epoch, flags.batch_size)
 	G = get_G([None, flags.dim_z])
-	D = get_DQ([None, flags.output_size, flags.output_size, flags.n_channel])
+	Base = get_base([None, flags.output_size, flags.output_size, flags.n_channel])
+	D = get_D([None, 4096])
+	Q = get_Q([None, 4096])
 
 	G.train()
+	Base.train()
 	D.train()
+	Q.train()
 
-	g_optimizer = tf.optimizers.Adam(learning_rate=flags.G_learning_rate)
-	d_optimizer = tf.optimizers.Adam(learning_rate=flags.D_learning_rate)
+	g_optimizer = tf.optimizers.Adam(learning_rate=flags.G_learning_rate, beta_1=flags.beta_1)
+	d_optimizer = tf.optimizers.Adam(learning_rate=flags.D_learning_rate, beta_1=flags.beta_1)
 	
 	n_step_epoch = int(len(images_path) // flags.batch_size)
 	his_g_loss = []
@@ -69,8 +71,10 @@ def train():
 			step_time = time.time()
 			with tf.GradientTape(persistent=True) as tape:
 				z, c = gen_noise()
-				fake_logits, fake_cat = D(G(z))
-				real_logits, _ = D(batch_images)
+				fake = Base(G(z))
+				fake_logits = D(fake)
+				fake_cat = Q(fake)
+				real_logits = D(Base(batch_images))
 				
 				d_loss_fake = tl.cost.sigmoid_cross_entropy(output=fake_logits, target=tf.zeros_like(fake_logits), name='d_loss_fake')
 				d_loss_real = tl.cost.sigmoid_cross_entropy(output=real_logits, target=tf.ones_like(real_logits), name='d_loss_real')
@@ -79,13 +83,12 @@ def train():
 				g_loss = tl.cost.sigmoid_cross_entropy(output=fake_logits, target=tf.ones_like(fake_logits), name='g_loss_fake')
 
 				mutual = calc_mutual(fake_cat, c)
-				d_loss += mutual
 				g_loss += mutual
-
-			grad = tape.gradient(g_loss, G.trainable_weights)
-			g_optimizer.apply_gradients(zip(grad, G.trainable_weights))
-			grad = tape.gradient(d_loss, D.trainable_weights)
-			d_optimizer.apply_gradients(zip(grad, D.trainable_weights))
+				
+			grad = tape.gradient(g_loss, G.trainable_weights + Q.trainable_weights)
+			g_optimizer.apply_gradients(zip(grad, G.trainable_weights + Q.trainable_weights))
+			grad = tape.gradient(d_loss, D.trainable_weights + Base.trainable_weights)
+			d_optimizer.apply_gradients(zip(grad, D.trainable_weights + Base.trainable_weights))
 			del tape
 			print(f"Epoch: [{epoch}/{flags.n_epoch}] [{step}/{n_step_epoch}] took: {time.time()-step_time:.3f}, d_loss: {d_loss:.5f}, g_loss: {g_loss:.5f}, mutual: {mutual:.5f}")
 
@@ -94,12 +97,11 @@ def train():
 				his_d_loss.append(d_loss)
 				his_mutual.append(mutual)
 
-		xaxis = [i for i in range(len(his_g_loss))]
-		plt.plot(xaxis, his_d_loss)
-		plt.plot(xaxis, his_g_loss)
-		plt.plot(xaxis, his_mutual)
+		plt.plot(his_d_loss)
+		plt.plot(his_g_loss)
+		plt.plot(his_mutual)
 		plt.legend(['D_Loss', 'G_Loss', 'Mutual_Info'])
-		plt.xlabel('Iterations')
+		plt.xlabel(f'Iterations / {flags.save_every_it}')
 		plt.ylabel('Loss')
 		plt.savefig(f'{flags.result_dir}/loss.jpg')
 		plt.clf()
@@ -108,10 +110,11 @@ def train():
 		G.save_weights(f'{flags.checkpoint_dir}/G.npz', format='npz')
 		D.save_weights(f'{flags.checkpoint_dir}/D.npz', format='npz')
 		G.eval()
-		z = gen_eval_noise()
-		result = G(z)
+		for k in range(flags.n_categorical):
+			z = gen_eval_noise(k, flags.n_sample)
+			result = G(z)
+			tl.visualize.save_images(result.numpy(), [flags.n_sample, flags.dim_categorical], f'result/train_{epoch}_{k}.png')
 		G.train()
-		tl.visualize.save_images(result.numpy(), [flags.n_categorical, flags.dim_categorical], f'result/train_{epoch}.png')
 
 if __name__ == "__main__":
 	train()

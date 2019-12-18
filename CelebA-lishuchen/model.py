@@ -33,18 +33,20 @@ def get_base(shape):
 	nn = Flatten()(nn)
 	return tl.models.Model(inputs=ni, outputs=nn, name='base')
 
-def get_DQ(shape):
+def get_D(shape):
+	w_init = tf.random_normal_initializer(stddev=0.02)
+
+	ni = Input(shape)
+	d = Dense(n_units=1, W_init=w_init)(ni)
+	return tl.models.Model(inputs=ni, outputs=d, name='D_tail')
+
+def get_Q(shape):
 	w_init = tf.random_normal_initializer(stddev=0.02)
 	gamma_init = tf.random_normal_initializer(1., 0.02)
 	lrelu = lambda x : tf.nn.leaky_relu(x, flags.leaky_rate)
-	
-	base_layer = get_base(shape).as_layer()
+
 	ni = Input(shape)
-	d = base_layer(ni)
-	q = base_layer(ni)
-	d = Dense(n_units=1, W_init=w_init)(d)
-	q = Dense(n_units=128, W_init=w_init, b_init=None)(q)
+	q = Dense(n_units=128, W_init=w_init, b_init=None)(ni)
 	q = BatchNorm(decay=0.9, act=lrelu, gamma_init=gamma_init)(q)
 	q = Dense(n_units=flags.n_categorical * flags.dim_categorical, W_init=w_init)(q)
-	
-	return tl.models.Model(inputs=ni, outputs=[d, q], name='DQ')
+	return tl.models.Model(inputs=ni, outputs=q, name='Q_tail')
