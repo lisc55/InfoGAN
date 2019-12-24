@@ -42,6 +42,13 @@ def calc_mutual(output, target):
 		offset += flags.dim_categorical
 	return mutual
 
+def convert(images):
+	for i in range(len(images)):
+		mi = np.min(images[i])
+		mx = np.max(images[i])
+		images[i] = (images[i] - mi) / (mx - mi)
+	return images
+
 def train():
 	images, images_path = get_celebA(flags.output_size, flags.n_epoch, flags.batch_size)
 	G = get_G([None, flags.dim_z])
@@ -113,7 +120,7 @@ def train():
 		for k in range(flags.n_categorical):
 			z = gen_eval_noise(k, flags.n_sample)
 			result = G(z)
-			tl.visualize.save_images(result.numpy(), [flags.n_sample, flags.dim_categorical], f'result/train_{epoch}_{k}.png')
+			tl.visualize.save_images(convert(result.numpy()), [flags.n_sample, flags.dim_categorical], f'result/train_{epoch}_{k}.png')
 		G.train()
 
 if __name__ == "__main__":

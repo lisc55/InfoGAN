@@ -13,7 +13,7 @@ class FLAGS(object):
 		self.output_size = 32
 		self.n_channel = 3
 		self.save_every_epoch = 1
-		self.save_every_it = 100
+		self.save_every_it = 10
 		self.n_sample = 5
 		self.data_dir = "test_CelebA"
 		self.checkpoint_dir = "checkpoint"
