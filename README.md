@@ -13,7 +13,9 @@ Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by
 
 #### Manipulating the First Continuous Latent Code
 
-<span style="color: red;">Changing c1 will rotate the digits.</span>
+```diff
+- Changing c1 will rotate the digits.
+```
 
 <div align="center">
 	<img src='./MNIST-wangchang/results/c1_res.png' width="100%">
@@ -21,7 +23,9 @@ Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by
 
 #### Manipulating the Second Continuous Latent Code
 
-<span style="color: red;">Changing c2 will change the width of the digits.</span>
+```diff
+- Changing c2 will change the width of the digits.
+```
 
 <div align="center">
 	<img src='./MNIST-wangchang/results/c2_res.png' width="100%">
@@ -29,7 +33,9 @@ Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by
 
 #### Manipulating the Discrete Latent Code (Categorical)
 
-<span style="color: red;">Changing d will change the type of digits.</span>
+```diff
+- Changing d will change the type of digits
+```
 
 <div align="center">
 	<img src='./MNIST-wangchang/results/cat_res.png' width="100%">
