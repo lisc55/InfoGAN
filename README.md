@@ -13,8 +13,8 @@ Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by
 
 #### Manipulating the First Continuous Latent Code
 
-```diff
-- Changing c1 will rotate the digits.
+```html
+<span style="color: red;"><strong>Changing c1 will rotate the digits.</strong></span>
 ```
 
 <div align="center">
@@ -23,8 +23,8 @@ Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by
 
 #### Manipulating the Second Continuous Latent Code
 
-```diff
-- Changing c2 will change the width of the digits.
+```html
+<span style="color: red;"><strong>Changing c2 will change the width of the digits.</strong></span>
 ```
 
 <div align="center">
@@ -33,8 +33,8 @@ Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by
 
 #### Manipulating the Discrete Latent Code (Categorical)
 
-```diff
-- Changing d will change the type of digits
+```html
+<span style="color: red;"><strong>Changing d will change the type of digits.</strong></span>
 ```
 
 <div align="center">
@@ -110,6 +110,7 @@ python train.py
 
 1. [InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets](https://arxiv.org/abs/1606.03657)
 2. [Large-scale CelebFaces Attributes (CelebA) Dataset](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html)
+3. [THE MNIST DATABASEof handwritten digits](http://yann.lecun.com/exdb/mnist/)
 
 ## Authors
 
