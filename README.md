@@ -1,7 +1,7 @@
 # InfoGAN
-###InfoGAN Architecture 
+### InfoGAN Architecture 
 
-Tensorlayer implementation of ["InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets"](https://arxiv.org/abs/1606.03657).
+Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets](https://arxiv.org/abs/1606.03657).
 
 <img src='img/architecture.pdf' width="80%" height="50%">
 
@@ -13,23 +13,33 @@ Tensorlayer implementation of ["InfoGAN: Interpretable Representation Learning b
 
 Azimuth (pose):
 
-<img src='./CelebA-lishuchen/samples/Azimuth.png' width="100%" height="50%">
+<div align="center">
+	<img src='./CelebA-lishuchen/samples/Azimuth.png' width="80%" height="50%">
+</div>
 
 Presence or absence of glasses:
 
-<img src='./CelebA-lishuchen/samples/Glasses.png' width="100%" height="50%">
+<div align="center">
+	<img src='./CelebA-lishuchen/samples/Glasses.png' width="80%" height="50%">
+</div>
 
 Hair color:
 
-<img src='./CelebA-lishuchen/samples/Hair_color.png' width="100%" height="50%">
+<div align="center">
+	<img src='./CelebA-lishuchen/samples/Hair_color.png' width="80%" height="50%">
+</div>
 
 Hair quantity:
 
-<img src='./CelebA-lishuchen/samples/Hair_quantity.png' width="100%" height="50%">
+<div align="center">
+	<img src='./CelebA-lishuchen/samples/Hair_quantity.png' width="80%" height="50%">
+</div>
 
 Lighting:
 
-<img src='./CelebA-lishuchen/samples/Lighting.png' width="100%" height="50%">
+<div align="center">
+	<img src='./CelebA-lishuchen/samples/Lighting.png' width="80%" height="50%">
+</div>
 
 ### Run
 
@@ -44,7 +54,7 @@ python train.py
 
 ### Reference
 
-1. ["InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets"](https://arxiv.org/abs/1606.03657)
+1. [InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets](https://arxiv.org/abs/1606.03657)
 2. [Large-scale CelebFaces Attributes (CelebA) Dataset](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html)
 
 ### Author
