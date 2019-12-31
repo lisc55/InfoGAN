@@ -13,8 +13,8 @@ Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by
 
 #### Manipulating the First Continuous Latent Code
 
-```html
-<span style="color: red;"><strong>Changing c1 will rotate the digits.</strong></span>
+```diff
+- Changing c1 will rotate the digits.
 ```
 
 <div align="center">
@@ -23,8 +23,8 @@ Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by
 
 #### Manipulating the Second Continuous Latent Code
 
-```html
-<span style="color: red;"><strong>Changing c2 will change the width of the digits.</strong></span>
+```diff
+- Changing c2 will change the width of the digits.
 ```
 
 <div align="center">
@@ -33,8 +33,8 @@ Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by
 
 #### Manipulating the Discrete Latent Code (Categorical)
 
-```html
-<span style="color: red;"><strong>Changing d will change the type of digits.</strong></span>
+```diff
+- Changing d will change the type of digits
 ```
 
 <div align="center">
