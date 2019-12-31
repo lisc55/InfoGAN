@@ -110,7 +110,7 @@ python train.py
 
 1. [InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets](https://arxiv.org/abs/1606.03657)
 2. [Large-scale CelebFaces Attributes (CelebA) Dataset](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html)
-3. [THE MNIST DATABASEof handwritten digits](http://yann.lecun.com/exdb/mnist/)
+3. [THE MNIST DATABASE of handwritten digits](http://yann.lecun.com/exdb/mnist/)
 
 ## Authors
 
