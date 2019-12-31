@@ -1,5 +1,5 @@
 # InfoGAN
-### InfoGAN Architecture 
+## InfoGAN Architecture 
 
 Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets](https://arxiv.org/abs/1606.03657).
 
@@ -7,11 +7,11 @@ Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by
 	<img src='img/architecture.svg' width="60%" height="50%">
 </div>
 
-### Results
+## Results
 
-#### CelebA
+### CelebA
 
-##### Manipulating Discrete Latent Code
+#### Manipulating Discrete Latent Code
 
 Azimuth (pose):
 
@@ -43,7 +43,7 @@ Lighting:
 	<img src='./CelebA-lishuchen/samples/Lighting.png' width="80%" height="50%">
 </div>
 
-### Run
+## Run
 
 + Set your image folder in `config.py`.
 + Some links for the datasets:
@@ -54,12 +54,12 @@ Lighting:
 python train.py
 ```
 
-### Reference
+## Reference
 
 1. [InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets](https://arxiv.org/abs/1606.03657)
 2. [Large-scale CelebFaces Attributes (CelebA) Dataset](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html)
 
-### Author
+## Author
 
 + [李舒辰 (@lisc55)](https://github.com/lisc55): The experiment on CelebA.
 
