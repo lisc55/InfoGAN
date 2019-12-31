@@ -15,7 +15,7 @@ class FLAGS(object):
 		self.save_every_epoch = 1
 		self.save_every_it = 10
 		self.n_sample = 5
-		self.data_dir = "test_CelebA"
+		self.data_dir = "CelebA"
 		self.checkpoint_dir = "checkpoint"
 		self.result_dir = "result"
 flags = FLAGS()
