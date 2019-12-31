@@ -9,6 +9,44 @@ Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by
 
 ## Results
 
+### MNIST
+
+#### Manipulating the First Continuous Latent Code
+
+<span style="color: red;"><strong>Changing c1 will rotate the digits.</strong></span>
+
+<div align="center">
+	<img src='./MNIST-wangchang/results/c1_res.png' width="100%">
+</div>
+
+#### Manipulating the Second Continuous Latent Code
+
+<span style="color: red;"><strong>Changing c2 will change the width of the digits..</strong></span>
+
+<div align="center">
+	<img src='./MNIST-wangchang/results/c2_res.png' width="100%">
+</div>
+
+#### Manipulating the Discrete Latent Code (Categorical)
+
+<span style="color: red;"><strong>Changing d will change the type of digits.</strong></span>
+
+<div align="center">
+	<img src='./MNIST-wangchang/results/cat_res.png' width="100%">
+</div>
+
+#### Random Generation and Loss Plot
+
+<div align="center">
+	<img src='./MNIST-wangchang/results/random.png' width="100%">
+</div>
+
+G_loss increases steadily after a sufficient number of iterations, showing the discriminator is getting stronger and stronger and indicating the end of training.
+
+<div align="center">
+	<img src='./MNIST-wangchang/results/loss.png' width="100%">
+</div>
+
 ### CelebA
 
 #### Manipulating Discrete Latent Code
@@ -45,6 +83,14 @@ Lighting:
 
 ## Run
 
+#### MNIST
+
+* Start training using ```python train.py```; this will automatically download the dataset.
+* To see the results, execute ```python test.py``` and **input the number of your saved model**.
+* Feel free to manipulate the parameters in ```test.py```.
+
+#### CelebA
+
 + Set your image folder in `config.py`.
 + Some links for the datasets:
 	+ [CelebA](https://drive.google.com/drive/folders/0B7EVK8r0v71pWEZsZE9oNnFzTm8)
@@ -54,12 +100,13 @@ Lighting:
 python train.py
 ```
 
-## Reference
+## References
 
 1. [InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets](https://arxiv.org/abs/1606.03657)
 2. [Large-scale CelebFaces Attributes (CelebA) Dataset](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html)
 
-## Author
+## Authors
 
 + [李舒辰 (@lisc55)](https://github.com/lisc55): The experiment on CelebA.
++ [王畅 (@wangchang327)](https://github.com/wangchang327): The experiment on MNIST.
 
