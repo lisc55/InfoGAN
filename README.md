@@ -3,7 +3,9 @@
 
 Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets](https://arxiv.org/abs/1606.03657).
 
-<img src='img/architecture.svg' width="80%" height="50%">
+<div align="center">
+	<img src='img/architecture.svg' width="60%" height="50%">
+</div>
 
 ### Results
 
@@ -59,5 +61,5 @@ python train.py
 
 ### Author
 
-+ [李舒辰 (@lisc55)](https://github.com/lisc55)
++ [李舒辰 (@lisc55)](https://github.com/lisc55): The experiment on CelebA.
 
