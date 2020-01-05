@@ -16,7 +16,7 @@ Tensorlayer implementation of [InfoGAN: Interpretable Representation Learning by
 Changing <img src="https://latex.codecogs.com/svg.latex?c_1" title="c_1" /> will rotate the digits:
 
 <div align="center">
-	<img src='./MNIST-wangchang/results/c1_res.png' width="100%">
+	<img src='./MNIST-wangchang/results/c1_res.png' width="60%">
 </div>
 
 #### Manipulating the Second Continuous Latent Code
@@ -24,7 +24,7 @@ Changing <img src="https://latex.codecogs.com/svg.latex?c_1" title="c_1" /> will
 Changing <img src="https://latex.codecogs.com/svg.latex?c_2" title="c_2" /> will change the width of the digits:
 
 <div align="center">
-	<img src='./MNIST-wangchang/results/c2_res.png' width="100%">
+	<img src='./MNIST-wangchang/results/c2_res.png' width="60%">
 </div>
 
 #### Manipulating the Discrete Latent Code (Categorical)
@@ -32,13 +32,13 @@ Changing <img src="https://latex.codecogs.com/svg.latex?c_2" title="c_2" /> will
 Changing <img src="https://latex.codecogs.com/svg.latex?d" title="d" /> will change the type of digits:
 
 <div align="center">
-	<img src='./MNIST-wangchang/results/cat_res.png' width="100%">
+	<img src='./MNIST-wangchang/results/cat_res.png' width="60%">
 </div>
 
 #### Random Generation and Loss Plot
 
 <div align="center">
-	<img src='./MNIST-wangchang/results/random.png' width="100%">
+	<img src='./MNIST-wangchang/results/random.png' width="60%">
 </div>
 
 G_loss increases steadily after a sufficient number of iterations, showing the discriminator is getting stronger and stronger and indicating the end of training.
