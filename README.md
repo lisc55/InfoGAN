@@ -81,6 +81,17 @@ Lighting:
 	<img src='./CelebA-lishuchen/samples/Lighting.png' width="80%" height="50%">
 </div>
 
+### Faces
+
+The code is based on a dataset in the format of .png.
+However, due to my lack of knowledge on 3D morphable models(3DMM) and lack of time, I didn't figure out how to convert the Basel Face Model to the format of .png. I trained tht network on a relatively small dataset [3D Face Scans & Renderings](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-0&id=basel_face_model).
+
+#### Loss Plot
+
+<div align="center">
+	<img src='./Faces-zhushenhan/loss.png' width="25%">
+</div>
+
 ## Run
 
 #### MNIST
@@ -102,9 +113,9 @@ python train.py
 
 #### Faces
 
-* Set your image folder in 'config.py'. Note that BFM 2009 is provided in the format of .mat, before you start training, convert it to .png first.
+* Set your image folder in `config.py`. Note that BFM 2009 is provided in the format of .mat. Before you start training, convert it to the format of .png first.
 * Links for BFM 2009:
-	* [Faces](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-0&id=basel_face_model)
+	* [Basel Face Model](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-0&id=basel_face_model)
 * Start training by typing ```python train.py```
 
 ## References
