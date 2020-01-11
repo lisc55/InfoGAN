@@ -100,6 +100,13 @@ Lighting:
 python train.py
 ```
 
+#### Faces
+
+* Set your image folder in 'config.py'. Note that BFM 2009 is provided in the format of .mat, before you start training, convert it to .png first.
+* Links for BFM 2009:
+	* [Faces](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-0&id=basel_face_model)
+* Start training by typing ```python train.py```
+
 ## References
 
 1. [InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets](https://arxiv.org/abs/1606.03657)
@@ -110,4 +117,5 @@ python train.py
 
 + [李舒辰 (@lisc55)](https://github.com/lisc55): The experiment on CelebA.
 + [王畅 (@wangchang327)](https://github.com/wangchang327): The experiment on MNIST.
++ [竺沈涵 (@zshCuanNi)](https://github.com/zshCuanNi): The experiment on Faces.
 
