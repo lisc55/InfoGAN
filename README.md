@@ -89,7 +89,7 @@ However, due to my lack of knowledge on 3D morphable models(3DMM) and lack of ti
 #### Loss Plot
 
 <div align="center">
-	<img src='./Faces-zhushenhan/loss.png' width="25%">
+	<img src='./Faces-zhushenhan/loss.png' width="100%">
 </div>
 
 ## Run
@@ -114,7 +114,7 @@ python train.py
 #### Faces
 
 * Set your image folder in `config.py`. Note that BFM 2009 is provided in the format of .mat. Before you start training, convert it to the format of .png first.
-* Links for BFM 2009:
+* A link for BFM 2009:
 	* [Basel Face Model](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-0&id=basel_face_model)
 * Start training by typing ```python train.py```
 
