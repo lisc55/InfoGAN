@@ -85,12 +85,14 @@ Lighting:
 
 The code is based on a dataset in the format of .png.
 However, due to my lack of knowledge on 3D morphable models(3DMM) and lack of time, I didn't figure out how to convert the Basel Face Model to the format of .png. I trained tht network on a relatively small dataset [3D Face Scans & Renderings](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-0&id=basel_face_model).
+The code maybe buggy, and I may check my code some day.
 
 #### Loss Plot
 
 <div align="center">
 	<img src='./Faces-zhushenhan/loss.png' width="100%">
 </div>
+
 
 ## Run
 
