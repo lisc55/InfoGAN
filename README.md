@@ -132,7 +132,7 @@ python train.py
 
 #### Chairs
 
-+ Set your image folder in `config.py`.
++ Set your image folder in `data.py`.
 + Some links for the datasets:
 	+ [Chairs](https://www.di.ens.fr/willow/research/seeing3Dchairs/)
 + Start training.
