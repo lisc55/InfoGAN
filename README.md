@@ -91,14 +91,14 @@ The code maybe buggy, and I may check my code some day.
 #### Loss Plot
 
 <div align="center">
-	<img src='./Faces-zhushenhan/loss.png' width="100%">
+	<img src='./Faces-zhushenhan/results/loss.png' width="100%">
 </div>
 
 #### Azimuth
 
 Because the dataset is too small, the result looks bad. :( However, I believe if I use BFM 2009 as dataset, it will yield good results.
 <div align="center">
-	<img src='./Faces-zhushenhan/Azimuth.png' width="100%">
+	<img src='./Faces-zhushenhan/results/Azimuth.png' width="100%">
 </div>
 
 ### Chairs
