@@ -146,6 +146,7 @@ python train.py
 1. [InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets](https://arxiv.org/abs/1606.03657)
 2. [Large-scale CelebFaces Attributes (CelebA) Dataset](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html)
 3. [THE MNIST DATABASE of handwritten digits](http://yann.lecun.com/exdb/mnist/)
+4. [Seeing 3D chairs: exemplar part-based 2D-3D alignment using a large dataset of CAD models](https://www.di.ens.fr/willow/research/seeing3Dchairs/)
 
 ## Authors
 
