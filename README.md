@@ -93,6 +93,16 @@ The code maybe buggy, and I may check my code some day.
 	<img src='./Faces-zhushenhan/loss.png' width="100%">
 </div>
 
+### Chairs
+
+#### Rotation
+<div align="center">
+	<img src='./Chairs-yuepengyun/results/rotation.png' width="80%" height="50%">
+</div>
+
+<div align="center">
+	<img src='./Chairs-yuepengyun/results/rotation1.png' width="80%" height="50%">
+</div>
 
 ## Run
 
@@ -120,6 +130,17 @@ python train.py
 	* [Basel Face Model](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-0&id=basel_face_model)
 * Start training by typing ```python train.py```
 
+#### Chairs
+
++ Set your image folder in `config.py`.
++ Some links for the datasets:
+	+ [Chairs](https://www.di.ens.fr/willow/research/seeing3Dchairs/)
++ Start training.
+
+```
+python train.py
+```
+
 ## References
 
 1. [InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets](https://arxiv.org/abs/1606.03657)
@@ -131,4 +152,5 @@ python train.py
 + [李舒辰 (@lisc55)](https://github.com/lisc55): The experiment on CelebA.
 + [王畅 (@wangchang327)](https://github.com/wangchang327): The experiment on MNIST.
 + [竺沈涵 (@zshCuanNi)](https://github.com/zshCuanNi): The experiment on Faces.
++ [岳鹏云 (@hswd40)](https://github.com/hswd40): The experiment on Chairs.
 
