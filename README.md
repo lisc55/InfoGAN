@@ -101,7 +101,7 @@ The code maybe buggy, and I may check my code some day.
 </div>
 
 <div align="center">
-	<img src='./Chairs-yuepengyun/results/rotation1.png' width="80%" height="50%">
+	<img src='./Chairs-yuepengyun/results/rotation2.png' width="80%" height="50%">
 </div>
 
 ## Run
