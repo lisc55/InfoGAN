@@ -1,7 +1,9 @@
+import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow_probability import distributions as tfd
 import numpy as np
-import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 
 
 def sample(size, c1=None, c2=None, c3=None, c4=None, c5=None):

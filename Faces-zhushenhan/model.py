@@ -37,7 +37,7 @@ def Discriminator(shape):
     nn = tl.layers.Dense(n_units=1024, W_init=w_init)(nn)
     nn = tl.layers.BatchNorm(decay=0.9, act=lambda x: tl.act.lrelu(
         x, flags.leaky_rate), gamma_init=gamma_init)(nn)
-    
+
     mid = nn
     nn = tl.layers.Dense(n_units=1, W_init=w_init)(nn)
     return tl.models.Model(inputs=ni, outputs=[nn, mid])

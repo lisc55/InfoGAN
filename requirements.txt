@@ -3,4 +3,6 @@ tensorflow==2.0.0rc0
 numpy==1.16.5
 matplotlib==3.1.1
 tqdm==4.40.2
+gast<0.3
+cloudpickle==1.1.1
 tensorflow-probability==0.8.0

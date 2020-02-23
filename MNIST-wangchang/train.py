@@ -9,6 +9,9 @@ import tensorlayer as tl
 import time
 from tqdm import *
 
+tl.files.exists_or_mkdir(flags.res_dir)
+tl.files.exists_or_mkdir(flags.model_dir)
+
 (Xtr, ytr), (_, _) = tf.keras.datasets.mnist.load_data()
 Xtr = (Xtr/127.5)-1
 Xtr = Xtr.reshape([-1, 28, 28, 1]).astype("float32")
@@ -72,7 +75,7 @@ def train(dataset, epochs):
         mi = tf.reduce_mean(info_loss).numpy()
         print("[{}]\t{:03d}\tGenerator: {:.4f}\tDiscriminator: {:.4f}\tInfo: {:.4f}".format(
             time.strftime('%H:%M:%S', time.localtime(time.time())), epoch+1, mg, md, mi))
-    
+
     plt.figure(figsize=(20, 8))
     plt.plot(gen_loss, label="generator")
     plt.plot(dis_loss, label="discriminator")

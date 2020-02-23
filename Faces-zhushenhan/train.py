@@ -1,15 +1,19 @@
+from tqdm import *
+import time
+import tensorlayer as tl
+from data import get_Faces
+from utils import sample, d_loss, g_loss, info, train_display_img
+from config import flags
+from model import Generator, Discriminator, Auxiliary, q_sample
+import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
 import os
-import matplotlib.pyplot as plt
-from model import Generator, Discriminator, Auxiliary, q_sample
-from config import flags
-from utils import sample, d_loss, g_loss, info, train_display_img
-from data import get_Faces
-import tensorlayer as tl
-import time
-from tqdm import *
+import matplotlib
+matplotlib.use('Agg')
 
+tl.files.exists_or_mkdir(flags.res_dir)
+tl.files.exists_or_mkdir(flags.model_dir)
 
 dataset = get_Faces(flags.output_size, flags.n_epoch, flags.batch_size)
 
@@ -69,7 +73,7 @@ def train(dataset, epochs):
         mi = tf.reduce_mean(info_loss).numpy()
         print("[{}]\t{:03d}\tGenerator: {:.4f}\tDiscriminator: {:.4f}\tInfo: {:.4f}".format(
             time.strftime('%H:%M:%S', time.localtime(time.time())), epoch+1, mg, md, mi))
-    
+
     plt.figure(figsize=(20, 8))
     plt.plot(gen_loss, label="generator")
     plt.plot(dis_loss, label="discriminator")

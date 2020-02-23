@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow_probability import distributions as tfd
 
+tl.files.exists_or_mkdir("./test")
+
 
 def sample(z, size, cat=-1, c1=None, c2=None):
     if c1 is not None:
@@ -26,7 +28,7 @@ def sample(z, size, cat=-1, c1=None, c2=None):
     return noise
 
 
-number = int(input())
+number = int(input('Model number: '))
 generator = tl.models.Model.load(
     './models/model{}.h5'.format(number), load_weights=True)
 generator.eval()

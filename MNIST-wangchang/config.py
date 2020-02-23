@@ -5,6 +5,8 @@ class FLAGS(object):
         self.G_learning_rate = 1e-3
         self.batch_size = 64
         self.leaky_rate = 0.1
+        self.model_dir = "models/"
+        self.res_dir = "results/"
 
 
 flags = FLAGS()
