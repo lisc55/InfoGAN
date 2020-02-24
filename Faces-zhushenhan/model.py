@@ -41,7 +41,6 @@ def Discriminator(shape):
     mid = nn
     nn = tl.layers.Dense(n_units=1, W_init=w_init)(nn)
     return tl.models.Model(inputs=ni, outputs=[nn, mid])
-    # return tl.models.Model(inputs=ni, outputs=nn)
 
 
 def q_sample(mu, var):
@@ -56,5 +55,4 @@ def Auxiliary(shape):
     ni = tl.layers.Input(shape)
     con1_mu = tl.layers.Dense(n_units=2, W_init=w_init)(ni)
     con1_var = tl.layers.Dense(n_units=2, W_init=w_init)(ni)
-
     return tl.models.Model(inputs=ni, outputs=[con1_mu, con1_var])

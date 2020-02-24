@@ -64,7 +64,7 @@ def train(dataset, epochs):
             dis_loss.append(dis)
             info_loss.append(info)
             step += 1
-            if step % 100 == 0:
+            if step % 500 == 0:
                 train_display_img(G, step)
 
         G.save("./models/model{}.h5".format(epoch+1), save_weights=True)

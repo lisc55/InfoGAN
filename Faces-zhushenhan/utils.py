@@ -70,5 +70,4 @@ def g_loss(fake):
 
 def info(fkcon1, z_con1):
     c1 = tf.reduce_mean(tf.reduce_sum(tf.square(fkcon1-z_con1), -1)) * 0.5
-    info_loss = c1
-    return info_loss
+    return c1
