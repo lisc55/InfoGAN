@@ -48,6 +48,7 @@ cc = np.linspace(-1, 1, 10)
 z = tfd.Uniform(low=-1.0, high=1.0).sample([1, 128])
 for i in range(5):
     imgs = []
+    z = tfd.Uniform(low=-1.0, high=1.0).sample([1, 128])
     for ii in range(10):
         noise = sample(z, 1, c1=cc[ii])
         img = generator(noise)[0]
@@ -58,7 +59,7 @@ for i in range(5):
 
 output_image = np.concatenate(output_image, 0)
 plt.figure(figsize=(15, 8))
-plt.suptitle("varying continuous latent code 1")
+plt.suptitle("varying continuous latent code")
 plt.imshow(output_image, cmap="gray")
 plt.axis("off")
 plt.savefig("./test/res.png")

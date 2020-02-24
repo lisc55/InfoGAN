@@ -40,7 +40,7 @@ def train_step(imgs):
         info_loss = info(fkcon1, z_con1)
         gen_loss = g_loss(fake_output)
         dis_loss = d_loss(real_output, fake_output)
-        gi = gen_loss+info_loss
+        gi = gen_loss+flags.info_lambda*info_loss
         di = dis_loss
 
     g_grd = gtape.gradient(gi, G.trainable_weights+Q.trainable_weights)
