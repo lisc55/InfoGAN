@@ -92,7 +92,7 @@ Lighting:
 #### Azimuth
 
 <div align="center">
-	<img src='./Faces-zhushenhan/results/azimuth.png' width="75%">
+	<img src='./Faces-zhushenhan/results/Azimuth.png' width="75%">
 </div>
 
 #### Random Generation
