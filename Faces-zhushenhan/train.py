@@ -36,8 +36,7 @@ def train_step(imgs):
         real_output, _ = D(imgs)
         fake_output, mid = D(fake_imgs)
         con1_mu, con1_var = Q(mid)
-        fkcon1 = q_sample(con1_mu, tf.exp(con1_var))
-        info_loss = info(fkcon1, z_con1)
+        info_loss = info(q_sample(con1_mu, tf.exp(con1_var)), z_con1)
         gen_loss = g_loss(fake_output)
         dis_loss = d_loss(real_output, fake_output)
         gi = gen_loss+flags.info_lambda*info_loss

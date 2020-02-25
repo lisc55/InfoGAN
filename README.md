@@ -83,11 +83,6 @@ Lighting:
 
 ### Faces
 
-The code is based on a dataset in the format of .png.
-However, due to my lack of knowledge on 3D morphable models(3DMM) and lack of time, I didn't figure out how to convert the Basel Face Model to the format of .png. 
-I trained tht network on a relatively small dataset [3D Face Scans & Renderings](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-0&id=basel_face_model). When training on this small dataset, batchsize is set to 8.
-The code maybe buggy, and I may check my code some day.
-
 #### Loss Plot
 
 <div align="center">
@@ -96,9 +91,14 @@ The code maybe buggy, and I may check my code some day.
 
 #### Azimuth
 
-Because the dataset is too small, the result looks bad. :( However, I believe if I use BFM 2009 as dataset, it will yield good results.
 <div align="center">
-	<img src='./Faces-zhushenhan/results/Azimuth.png' width="100%">
+	<img src='./Faces-zhushenhan/results/azimuth.png' width="75%">
+</div>
+
+#### Random Generation
+
+<div align="center">
+	<img src='./Faces-zhushenhan/results/random.png' width="50%">
 </div>
 
 ### Chairs
@@ -118,7 +118,6 @@ Because the dataset is too small, the result looks bad. :( However, I believe if
 
 * Start training using ```python train.py```; this will automatically download the dataset.
 * To see the results, execute ```python test.py``` and **input the number of your saved model**.
-* Feel free to manipulate the parameters in ```test.py```.
 
 #### CelebA
 
@@ -133,10 +132,12 @@ python train.py
 
 #### Faces
 
-* Set your image folder in `config.py`. Note that BFM 2009 is provided in the format of .mat. Before you start training, convert it to the format of .png first.
+* Set your data folder in `config.py`.
 * A link for BFM 2009:
-	* [Basel Face Model](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-0&id=basel_face_model)
-* Start training by typing ```python train.py```
+	* [Basel Face Model](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-0&id=basel_face_model). This should be downloaded before generating data.
+	* Data is generated using the code in ```data_generator```. Call ```gen_data``` in MATLAB.
+* Start training using ```python train.py```.
+* To see the results, execute ```python test.py``` and **input the number of your saved model**.
 
 #### Chairs
 
@@ -160,6 +161,6 @@ python train.py
 
 + [李舒辰 (@lisc55)](https://github.com/lisc55): The experiment on CelebA.
 + [王畅 (@wangchang327)](https://github.com/wangchang327): The experiment on MNIST.
-+ [竺沈涵 (@zshCuanNi)](https://github.com/zshCuanNi): The experiment on Faces.
++ [竺沈涵 (@zshCuanNi)](https://github.com/zshCuanNi): The experiment on Faces. Finished by [王畅 (@wangchang327)](https://github.com/wangchang327).
 + [岳鹏云 (@hswd40)](https://github.com/hswd40): The experiment on Chairs.
 
