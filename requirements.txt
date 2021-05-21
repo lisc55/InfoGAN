@@ -1,5 +1,5 @@
 tensorlayer==2.1.0
-tensorflow==2.0.0rc0
+tensorflow==2.5.0rc0
 numpy==1.16.5
 matplotlib==3.1.1
 tqdm==4.40.2
